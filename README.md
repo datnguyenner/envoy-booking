@@ -21,3 +21,8 @@ cd envoy-booking/envoy-back-end/
 cd envoy-booking/envoy-visitors/
 
 npm start
+
+
+<b>Manual Testing instructions can be found here in this google doc</b>
+
+https://docs.google.com/document/d/1fqHw6NVRfnij0rRrPnJuzKLTVeu3U-_sJ0rZzGAYlfQ/edit?usp=sharing

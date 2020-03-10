@@ -38,6 +38,25 @@ class App extends Component {
     this.setState({ visitors: [...visitors], isLoading: false });
   }
 
+  addVisitor = async () => {
+
+    this.setState({ isLoading: true })
+    const response = await fetch("http://localhost:8080/addVisitor", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ fn: this.state.fn, ln: this.state.ln, notes: this.state.notes, signOutTime: 0 })
+    })
+    const visitors = await response.json();
+    this.setState({ visitors: [...visitors], isLoading: false, displayModal: false, fn: '', ln: '', notes: '' })
+  }
+
+  filterBySigneOut = () => {
+    let isFiltered = this.state.isFiltered;
+    this.setState({ isFiltered: !isFiltered })
+  }
+
   renderVisitors = () => {
 
     let visitors = this.state.visitors;
@@ -66,25 +85,6 @@ class App extends Component {
     })
 
     return body;
-  }
-
-  addVisitor = async () => {
-
-    this.setState({ isLoading: true })
-    const response = await fetch("http://localhost:8080/addVisitor", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ fn: this.state.fn, ln: this.state.ln, notes: this.state.notes, signOutTime: 0 })
-    })
-    const visitors = await response.json();
-    this.setState({ visitors: [...visitors], isLoading: false, displayModal: false, fn: '', ln: '', notes: '' })
-  }
-
-  filterBySigneOut = () => {
-    let isFiltered = this.state.isFiltered;
-    this.setState({ isFiltered: !isFiltered })
   }
 
   render() {

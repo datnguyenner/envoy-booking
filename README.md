@@ -1,6 +1,6 @@
 # envoy-booking
 
-<b>Start up the back end using spring boot
+<b>Start up the back end using spring boot</b>
 
 You need:
 
@@ -16,7 +16,7 @@ cd envoy-booking/envoy-back-end/
 
 
 
-<b>Start up the front end React app on http://localhost:3000
+<b>Start up the front end React app on http://localhost:3000</b>
 
 cd envoy-booking/envoy-visitors/
 

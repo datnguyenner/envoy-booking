@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.scss';
 import Modal from 'react-modal';
 
+const url = 'http://ec2-34-217-41-200.us-west-2.compute.amazonaws.com:8080';
+
 class App extends Component {
 
   constructor(props) {
@@ -19,7 +21,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const response = await fetch("http://localhost:8080/getVisitors")
+    const response = await fetch(url + "/getVisitors")
     const visitors = await response.json();
     this.setState({ visitors: [...visitors] });
   }
@@ -27,7 +29,7 @@ class App extends Component {
   signOutVisitor = async (fn, ln, notes) => {
 
     this.setState({ isLoading: true })
-    const response = await fetch("http://localhost:8080/signOut", {
+    const response = await fetch(url + "/signOut", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -41,7 +43,7 @@ class App extends Component {
   addVisitor = async () => {
 
     this.setState({ isLoading: true })
-    const response = await fetch("http://localhost:8080/addVisitor", {
+    const response = await fetch(url + "/addVisitor", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

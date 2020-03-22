@@ -1,8 +1,8 @@
 # envoy-booking
 
-<b>The backend is built using spring boot and is deployed to AWS.  There is no need to deploy a local instance</b>
+<b>The backend is no longer on AWS </b>
 
-<b>Here are the instructions to deploy locally if you want to deploy locally</b>
+<b>Here are the instructions to deploy locally</b>
 
 You need:
 

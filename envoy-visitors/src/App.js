@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.scss';
 import Modal from 'react-modal';
 
-const url = 'http://ec2-34-217-41-200.us-west-2.compute.amazonaws.com:8080';
+const url = 'http://localhost:8080';
 
 class App extends Component {
 
@@ -21,37 +21,45 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const response = await fetch(url + "/getVisitors")
+    const response = await fetch(url + "/v1/visitors")
     const visitors = await response.json();
+    console.log(visitors);
     this.setState({ visitors: [...visitors] });
   }
 
-  signOutVisitor = async (fn, ln, notes) => {
+  signOutVisitor = async (visitor) => {
 
+    let signOutTime = Date.now();
     this.setState({ isLoading: true })
-    const response = await fetch(url + "/signOut", {
-      method: 'POST',
+    await fetch(url + "/v1/visitors/" + visitor.id, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ fn, ln, notes, signOutTime: Date.now() })
+      body: JSON.stringify(signOutTime)
     });
-    const visitors = await response.json();
-    this.setState({ visitors: [...visitors], isLoading: false });
+
+    visitor.signOutTime = signOutTime;
+  
+    this.setState({ visitors: [...this.state.visitors], isLoading: false });
   }
 
   addVisitor = async () => {
 
     this.setState({ isLoading: true })
-    const response = await fetch(url + "/addVisitor", {
+    const newVisitor = { id: '', fn: this.state.fn, ln: this.state.ln, notes: this.state.notes, signOutTime: 0 };
+    console.log(newVisitor);
+    const response = await fetch(url + "/v1/visitors", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ fn: this.state.fn, ln: this.state.ln, notes: this.state.notes, signOutTime: 0 })
+      body: JSON.stringify(newVisitor)
     })
-    const visitors = await response.json();
-    this.setState({ visitors: [...visitors], isLoading: false, displayModal: false, fn: '', ln: '', notes: '' })
+    const id = await response.json();
+    console.log('test id', id)
+    newVisitor.id = id;
+    this.setState({ visitors: [...this.state.visitors, newVisitor], isLoading: false, displayModal: false, fn: '', ln: '', notes: '' })
   }
 
   filterBySigneOut = () => {
@@ -67,7 +75,8 @@ class App extends Component {
       visitors = visitors.filter(visitor => visitor.signOutTime > 0);
     }
 
-    let body = visitors.map(({ fn, ln, notes, signOutTime }, i) => {
+    let body = visitors.map((visitor, i) => {
+      let { fn, ln, notes, signOutTime } = visitor;
       let date = new Date(signOutTime);
       return (
         <tr key={i}>
@@ -78,7 +87,7 @@ class App extends Component {
             <td className="p-1 border-t border-grey-light font-mono text-xs">
               {this.state.isLoading ?
                 <button className="btn disabled btn--smaller btn--outline">Signing out <i className="fas fa-spinner"></i></button> :
-                <button onClick={this.signOutVisitor.bind(this, fn, ln, notes)} className="btn btn--smaller btn--outline">Sign out</button>
+                <button onClick={this.signOutVisitor.bind(this, visitor)} className="btn btn--smaller btn--outline">Sign out</button>
               }
             </td>
           }

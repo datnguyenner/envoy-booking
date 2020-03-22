@@ -9,17 +9,27 @@ public class Visitor implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private String id;
 	private String fn;
 	private String ln;
 	private String notes;
 
 	private long signOutTime;
 
-	public Visitor(String fn, String ln, String notes, long signOutTime) {
+	public Visitor(String id, String fn, String ln, String notes, long signOutTime) {
+		this.id = "";
 		this.fn = fn;
 		this.ln = ln;
 		this.notes = notes;
 		this.signOutTime = signOutTime;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getFn() {
